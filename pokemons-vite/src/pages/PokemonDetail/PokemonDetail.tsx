@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { PokemonInfo } from "../../components/PokemonInfo/PokemonInfo";
-import { usePokemon } from "../../hooks/usePokemons";
 import { IPokemon } from "../../interfaces/interfaces";
 
 export const PokemonDetail = () => {
@@ -23,11 +22,8 @@ export const PokemonDetail = () => {
     }, []);
 
     return (
-        <div className="Pokemon-details">
-            <Link to={"/"}>
-                <p>Go Back to Main</p>
-            </Link>
-            {pokemon !== undefined && pokemon !==null ?
+      <div>
+      {pokemon !== undefined && pokemon !==null ?
                 <PokemonInfo pokemon={pokemon} />
                 :
                 <div>Loading...</div>

@@ -11,7 +11,6 @@ interface PokemonListProps {
 } 
 
 export const PokemonList = ({pokemonUrls, page, perPage}:PokemonListProps) => {
-    console.log(pokemonUrls);
     return(
         <div className="pokemon-list">
             {
