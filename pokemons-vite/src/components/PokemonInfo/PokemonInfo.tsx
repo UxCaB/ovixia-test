@@ -1,5 +1,5 @@
 import React from "react";
-import { IPokemon } from "../../interfaces/interfaces";
+import { IPokemon, Stat } from "../../interfaces/interfaces";
 import { background } from "../../utils/BackgroundByTypes";
 import Loader from "react-js-loader";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,11 +13,34 @@ interface PokemonInfoProps {
     pokemon: IPokemon | null;
 }
 
+interface TotalStats {
+    totalStats: number;
+    maxTotalStats: number;
+}
+
 export const PokemonInfo = ({pokemon} : PokemonInfoProps) => {
     /* @ts-ignore */
     const backgroundColor = background[pokemon?.types[0]?.type?.name]
     const maxStat = 255;
+
+    const getSumStats  = (stats: Stat[] | undefined):TotalStats => {
+        if (stats !== undefined) {
+         console.log(stats);
+            const initAccumulator = 0;
+            /* @ts-ignore */
+            const sumStats = stats.reduce((accumulator, {base_stat}) => accumulator + base_stat, initAccumulator)
+            console.log(sumStats)
+            const total = maxStat * stats.length;
+            return {"totalStats": sumStats, "maxTotalStats": total}
+        } else {
+            return {"totalStats": 0, "maxTotalStats": 0}
+        }
+    }
+
+    const {totalStats, maxTotalStats} = getSumStats(pokemon?.stats);
+
     const navigate = useNavigate();
+    
     if (!pokemon) {
         return (
             <div>
@@ -83,8 +106,15 @@ export const PokemonInfo = ({pokemon} : PokemonInfoProps) => {
                             </div>
                         )
                     })
-
                     }
+                    <div>
+                        <span>Total</span>
+                        <div className="styles-line">
+                            <p>{totalStats}</p>
+                            <div className="styles-line--primary" style={{ background: backgroundColor}}/>
+                            <div  className="styles-line--secondary" style={{ background: backgroundColor, opacity: 1, width: `${(totalStats / maxTotalStats)* 100}%`}}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
